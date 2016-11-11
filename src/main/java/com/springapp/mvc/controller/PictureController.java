@@ -2,6 +2,7 @@ package com.springapp.mvc.controller;
 
 import com.springapp.mvc.dao.interfaces.PictureDAO;
 import com.springapp.mvc.domain.Picture;
+import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -16,11 +17,16 @@ import java.util.List;
 @Controller
 @RequestMapping("/pictures")
 public class PictureController {
+
+    private static final Logger logger = Logger.getLogger(PictureController.class);
+
     @Autowired
     PictureDAO pictureDAO;
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
+        logger.debug(this.getClass().getName() + " index()");
+
         StringBuilder result = new StringBuilder();
 
         List<Picture> all = pictureDAO.findAll();

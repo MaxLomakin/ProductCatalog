@@ -3,6 +3,7 @@ package com.springapp.mvc.controller;
 import com.springapp.mvc.domain.User;
 import com.springapp.mvc.service.interfaces.UserService;
 import com.springapp.mvc.validator.UserFormValidator;
+import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ import java.util.*;
 @RequestMapping("/users")
 public class UserController {
 
-//    private final Logger logger = LoggerFactory.getLogger(UserController.class);
+    private final Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     UserFormValidator userFormValidator;
@@ -44,24 +45,27 @@ public class UserController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String index(Model model) {
-//        logger.debug("index()");
+        logger.debug(this.getClass().getName() + " index()");
+
         return "redirect:/users";
     }
 
      //list page
-    @RequestMapping(/*value = "/users",*/method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public String showAllUsers(Model model) {
-//        logger.debug("showAllUsers()");
+        logger.debug(this.getClass().getName() + " showAllUsers()");
+
         model.addAttribute("users", userService.findAll());
         return "users/list";
 
     }
 
     // save or update user
-    @RequestMapping(/*value = "/users",*/method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public String saveOrUpdateUser(@ModelAttribute("userForm") @Validated User user,
                                    BindingResult result, Model model, final RedirectAttributes redirectAttributes) {
-//        logger.debug("saveOrUpdateUser() : {}", user);
+        logger.debug(this.getClass().getName() + " saveOrUpdateUser() : " + user.toString());
+
         if (result.hasErrors()) {
             populateDefaultModel(model);
             return "users/userform";
@@ -84,7 +88,8 @@ public class UserController {
 //     show add user form /users/add
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String showAddUserForm(Model model) {
-//        logger.debug("showAddUserForm()");
+        logger.debug(this.getClass().getName() + " showAddUserForm()");
+
         User user = new User();
 
         // set default value
@@ -104,7 +109,8 @@ public class UserController {
 //     show update form /users/{id}/update
     @RequestMapping(value = "/{id}/update", method = RequestMethod.GET)
     public String showUpdateUserForm(@PathVariable("id") int id, Model model) {
-//        logger.debug("showUpdateUserForm() : {}", id);
+        logger.debug(this.getClass().getName() + " showUpdateUserForm() : " + id);
+
         User user = userService.findById(id);
         model.addAttribute("userForm", user);
 
@@ -117,7 +123,8 @@ public class UserController {
 //     delete user /users/{id}/delete
     @RequestMapping(value = "/{id}/delete", method = RequestMethod.POST)
     public String deleteUser(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
-//        logger.debug("deleteUser() : {}", id);
+        logger.debug(this.getClass().getName() + " deleteUser() : " + id);
+
         userService.remove(id);
 
         redirectAttributes.addFlashAttribute("css", "success");
@@ -130,7 +137,8 @@ public class UserController {
     // show user /users/{id}
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String showUser(@PathVariable("id") int id, Model model) {
-//        logger.debug("showUser() id: {}", id);
+        logger.debug(this.getClass().getName() + " showUser() id: " + id);
+
         User user = userService.findById(id);
         if (user == null) {
             model.addAttribute("css", "danger");
@@ -153,8 +161,9 @@ public class UserController {
 
     @ExceptionHandler(EmptyResultDataAccessException.class)
     public ModelAndView handleEmptyData(HttpServletRequest req, Exception ex) {
-//        logger.debug("handleEmptyData()");
-//        logger.error("Request: {}, error ", req.getRequestURL(), ex);
+        logger.debug(this.getClass().getName() + " handleEmptyData()");
+        logger.error(this.getClass().getName() + " Request: " +  req.getRequestURL() + " error: " + ex);
+
         ModelAndView model = new ModelAndView();
         model.setViewName("user/show");
         model.addObject("msg", "user not found");

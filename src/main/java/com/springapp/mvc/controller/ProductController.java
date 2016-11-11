@@ -2,6 +2,7 @@ package com.springapp.mvc.controller;
 
 import com.springapp.mvc.dao.interfaces.ProductDAO;
 import com.springapp.mvc.domain.Product;
+import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,11 +18,15 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
+    private static final Logger logger = Logger.getLogger(ProductController.class);
+
     @Autowired
     ProductDAO productDAO;
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
+        logger.debug(this.getClass().getName() + " index()");
+
         StringBuilder result = new StringBuilder();
 
         List<Product> all = productDAO.findAll();

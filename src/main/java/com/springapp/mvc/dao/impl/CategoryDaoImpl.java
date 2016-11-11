@@ -21,14 +21,12 @@ public class CategoryDaoImpl implements CategoryDAO
     public CategoryDaoImpl() {
     }
 
-    public CategoryDaoImpl(SessionFactory sessionFactory)
-    {
+    public CategoryDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
 
-    private Session getCurrentSession()
-    {
+    private Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
     }
 
@@ -36,7 +34,6 @@ public class CategoryDaoImpl implements CategoryDAO
 
     @Override
     public List<Category> findAll() {
-
         List list = getCurrentSession().createQuery("from Category").list();
         return list;
     }
@@ -44,23 +41,18 @@ public class CategoryDaoImpl implements CategoryDAO
     @Override
 
     public Category findById(Integer categoryId) {
-
         return (Category) getCurrentSession().load(Category.class, categoryId);
     }
 
     @Override
 
     public void addCategory(Category category) {
-
-
         getCurrentSession().saveOrUpdate(category);
-
     }
 
     @Override
 
-    public void editCategory(Category category, Integer categoryId)
-    {
+    public void editCategory(Category category, Integer categoryId) {
         /**
          * get current category to edit
          */
@@ -68,18 +60,15 @@ public class CategoryDaoImpl implements CategoryDAO
         /**
          * set new params to categoryToUpdate if not null
          */
-        if (categoryToUpdate != null)
-        {
+        if (categoryToUpdate != null) {
             categoryToUpdate.setCategoryName(category.getCategoryName());
             categoryToUpdate.setCategoryDescription(category.getCategoryDescription());
             getCurrentSession().saveOrUpdate(categoryToUpdate);
-
         }
     }
 
     @Override
-    public void removeCategory(Integer categoryId)
-    {
+    public void removeCategory(Integer categoryId) {
         /**
          * find the category which will be removed, find by id category
          */
@@ -88,10 +77,7 @@ public class CategoryDaoImpl implements CategoryDAO
          * check whether there is this category
          */
         if(categoryToDelete != null) {
-
             getCurrentSession().delete(categoryToDelete);
-
-
         }
     }
 }

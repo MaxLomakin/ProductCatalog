@@ -3,6 +3,7 @@ package com.springapp.mvc.controller;
 import com.springapp.mvc.dao.interfaces.DataObjectDAO;
 import com.springapp.mvc.domain.DataObject;
 import com.springapp.mvc.domain.Picture;
+import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,11 +19,15 @@ import java.util.List;
 @RequestMapping("/objects")
 public class ObjectController {
 
+    private static final Logger logger = Logger.getLogger(ObjectController.class);
+
     @Autowired
     DataObjectDAO dataObjectDAO;
 
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
+        logger.debug(this.getClass().getName() + " index()");
+
         StringBuilder result = new StringBuilder();
 
         List<DataObject> all = dataObjectDAO.findAll();
