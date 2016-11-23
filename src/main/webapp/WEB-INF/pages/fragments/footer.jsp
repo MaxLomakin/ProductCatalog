@@ -1,5 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<div class="container">
+<div class="container footer">
 	<hr>
 	<footer>
 		<p>&copy; Max Lomakin 2016</p>

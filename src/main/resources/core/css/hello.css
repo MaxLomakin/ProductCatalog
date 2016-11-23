@@ -1,3 +1,14 @@
 .checkbox-inline label, .radio-inline label{
   font-weight: normal;
 }
+
+.container.footer {
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+
+.container.footer p {
+  text-align: right;
+}
