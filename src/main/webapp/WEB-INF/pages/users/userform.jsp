@@ -13,7 +13,6 @@
 
 	<c:choose>
 		<c:when test="${userForm['new']}">
-			<h1>Add User</h1>
 		</c:when>
 		<c:otherwise>
 			<h1>Update User</h1>
@@ -112,6 +111,10 @@
 				</c:choose>
 			</div>
 		</div>
+
+		<input type="hidden"
+			   name="${_csrf.parameterName}"
+			   value="${_csrf.token}"/>
 	</form:form>
 
 </div>

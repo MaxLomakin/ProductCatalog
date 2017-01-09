@@ -6,6 +6,8 @@ import com.springapp.mvc.validator.UserFormValidator;
 import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,12 +33,13 @@ public class UserController {
     @Autowired
     UserFormValidator userFormValidator;
 
+    @Autowired
+    UserService userService;
+
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
         binder.setValidator(userFormValidator);
     }
-
-    private UserService userService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -47,6 +50,7 @@ public class UserController {
     public String index(Model model) {
         logger.debug(this.getClass().getName() + " index()");
 
+        model.addAttribute("_user", getPrincipal());
         return "redirect:/users";
     }
 
@@ -56,6 +60,7 @@ public class UserController {
         logger.debug(this.getClass().getName() + " showAllUsers()");
 
         model.addAttribute("users", userService.findAll());
+        model.addAttribute("_user", getPrincipal());
         return "users/list";
 
     }
@@ -78,6 +83,7 @@ public class UserController {
             }
 
             userService.saveOrUpdate(user);
+            model.addAttribute("_user", getPrincipal());
 
             // POST/REDIRECT/GET
             return "redirect:/users/" + user.getId();
@@ -100,6 +106,7 @@ public class UserController {
         user.setGrants(new ArrayList<String>(Arrays.asList("R")));
 
         model.addAttribute("userForm", user);
+        model.addAttribute("_user", getPrincipal());
 
         populateDefaultModel(model);
 
@@ -113,6 +120,7 @@ public class UserController {
 
         User user = userService.findById(id);
         model.addAttribute("userForm", user);
+        model.addAttribute("_user", getPrincipal());
 
         populateDefaultModel(model);
 
@@ -145,9 +153,9 @@ public class UserController {
             model.addAttribute("msg", "User not found");
         }
         model.addAttribute("user", user);
+        model.addAttribute("_user", getPrincipal());
 
         return "users/show";
-
     }
 
     //todo make configurable
@@ -170,6 +178,17 @@ public class UserController {
 
         return model;
 
+    }
+
+    private Object getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String name = ((UserDetails) principal).getUsername();
+            return userService.findById(Integer.parseInt(name));
+        }
+
+        return "";
     }
 
 }

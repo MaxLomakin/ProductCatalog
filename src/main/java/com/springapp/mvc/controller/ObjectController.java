@@ -3,8 +3,11 @@ package com.springapp.mvc.controller;
 import com.springapp.mvc.dao.interfaces.DataObjectDAO;
 import com.springapp.mvc.domain.DataObject;
 import com.springapp.mvc.domain.Picture;
+import com.springapp.mvc.service.interfaces.UserService;
 import org.apache.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,9 @@ public class ObjectController {
     @Autowired
     DataObjectDAO dataObjectDAO;
 
+    @Autowired
+    UserService userService;
+
     @RequestMapping(method = RequestMethod.GET)
     public String printWelcome(ModelMap model) {
         logger.debug(this.getClass().getName() + " index()");
@@ -40,7 +46,19 @@ public class ObjectController {
             }
         }
 
+        model.addAttribute("_user", getPrincipal());
         model.addAttribute("message", result);
         return "objects";
+    }
+
+    private Object getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String name = ((UserDetails) principal).getUsername();
+            return userService.findById(Integer.parseInt(name));
+        }
+
+        return "";
     }
 }

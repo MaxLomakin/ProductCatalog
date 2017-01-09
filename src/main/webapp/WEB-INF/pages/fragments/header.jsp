@@ -1,4 +1,5 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <head>
 
@@ -21,13 +22,37 @@
 		<div class="navbar-header">
 			<a class="navbar-brand" href="${urlHome}">Product Catalog</a>
 		</div>
-		<div id="navbar">
+		<div id="collapse navbar-collapse js-navbar">
 			<ul class="nav navbar-nav navbar-right">
-				<li class="active"><a href="${users}">Users</a></li>
-				<li class="active"><a href="${products}">Products</a></li>
-				<li class="active"><a href="${categories}">Categories</a></li>
-				<li class="active"><a href="${uploads}">Uploads</a></li>
-				<li class="active"><a href="${admin}">Admin Page</a></li>
+				<li class="dropdown">
+					<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
+						Navigation
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="${users}">Users</a></li>
+						<li><a href="${products}">Products</a></li>
+						<li><a href="${categories}">Categories</a></li>
+						<li><a href="${uploads}">Uploads</a></li>
+						<li><a href="${admin}">Admin Page</a></li>
+					</ul>
+				</li>
+				<li>
+					<c:if test="${not empty _user}">
+						<a href="/users/${_user.id}">${_user.name}</a>
+					</c:if>
+					<c:if test="${empty _user}">
+						<a href="#">guest</a>
+					</c:if>
+				</li>
+				<li>
+					<c:if test="${not empty _user}">
+						<a href="<c:url value="/logout" />">Logout</a>
+					</c:if>
+					<c:if test="${empty _user}">
+						<a href="<c:url value="/login" />">Login</a>
+					</c:if>
+				</li>
 			</ul>
 		</div>
 	</div>

@@ -54,6 +54,8 @@
 			</c:forEach>
 		</table>
 
+		<button class="btn" onclick="location.href='/users/add'">Create User</button>
+
 	</div>
 
 	<jsp:include page="../fragments/footer.jsp" />

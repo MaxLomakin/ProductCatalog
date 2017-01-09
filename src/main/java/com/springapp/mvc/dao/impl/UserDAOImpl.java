@@ -3,6 +3,7 @@ package com.springapp.mvc.dao.impl;
 import com.springapp.mvc.dao.interfaces.UserDAO;
 import com.springapp.mvc.domain.User;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,14 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public User findById(Integer userId) {
         return (User) getCurrentSession().get(User.class, userId);
+    }
+
+    @Override
+    public User findByName(String userName) {
+        Query query = getCurrentSession().createQuery("from User where name=:userName");
+        List users = query.setParameter("userName", userName).list();
+
+        return (User) users.iterator().next();
     }
 
     @Override
