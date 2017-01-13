@@ -173,7 +173,7 @@ public class UserController {
         logger.error(this.getClass().getName() + " Request: " +  req.getRequestURL() + " error: " + ex);
 
         ModelAndView model = new ModelAndView();
-        model.setViewName("user/show");
+        model.setViewName("users/show");
         model.addObject("msg", "user not found");
 
         return model;

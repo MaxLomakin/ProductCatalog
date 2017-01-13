@@ -3,6 +3,7 @@ package com.springapp.mvc.dao.impl;
 import com.springapp.mvc.dao.interfaces.DataObjectDAO;
 import com.springapp.mvc.domain.DataObject;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,6 @@ public class DataObjectDAOImpl implements DataObjectDAO {
         return session;
     }
 
-
     @Override
     public List<DataObject> findAll() {
         List list = getCurrentSession().createQuery("from DataObject").list();
@@ -48,22 +48,24 @@ public class DataObjectDAOImpl implements DataObjectDAO {
 
     @Override
     public DataObject findById(Integer objectId) {
-        return (DataObject) getCurrentSession().load(DataObject.class, objectId);
+        return (DataObject) getCurrentSession().get(DataObject.class, objectId);
     }
 
     @Override
-    public boolean addObject(DataObject object) {
-        try {
-            getCurrentSession().save(object);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    public DataObject findByName(String objectName) {
+        Query query = getCurrentSession().createQuery("from DataObject where name=:objectName");
+        List objects = query.setParameter("objectName", objectName).list();
+
+        return (DataObject) objects.iterator().next();
     }
 
     @Override
-    public boolean editObject(DataObject object, Integer objectId) {
+    public void addObject(DataObject object) {
+        getCurrentSession().save(object);
+    }
+
+    @Override
+    public void update(DataObject object, Integer objectId) {
         DataObject dataObject = findById(objectId);
 
         if(dataObject != null) {
@@ -72,26 +74,16 @@ public class DataObjectDAOImpl implements DataObjectDAO {
             dataObject.setObjectType(object.getObjectType());
             dataObject.setPicture(object.getPicture());
 
-            return true;
+            getCurrentSession().update(dataObject);
         }
-
-        return false;
     }
 
     @Override
-    public boolean removeObject(Integer objectId) {
+    public void remove(Integer objectId) {
         DataObject object = findById(objectId);
 
-        if(object != null) {
-            try {
-                getCurrentSession().delete(object);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
+        if (object != null) {
+            getCurrentSession().delete(object);
         }
-
-        return false;
     }
 }

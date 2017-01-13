@@ -8,9 +8,11 @@ import java.util.List;
  * Created by Max on 13.06.2016.
  */
 public interface DataObjectService {
-    public List<DataObject> findAll();
-    public DataObject findById(Integer objectId);
-    public boolean addObject(DataObject object);
-    public boolean editObject(DataObject object, Integer objectId);
-    public boolean removeObject(Integer objectId);
+    DataObject findById(Integer objectId);
+    DataObject findByName(String objectName);
+    List<DataObject> findAll();
+    void addObject(DataObject object);
+    void update(DataObject object, Integer objectId);
+    void saveOrUpdate(DataObject object);
+    void remove(Integer objectId);
 }

@@ -49,7 +49,7 @@ public class ObjectTypeDAOImpl implements ObjectTypeDAO {
 
     @Override
     public ObjectType findById(Integer objectTypeId) {
-        return (ObjectType) getCurrentSession().load(ObjectType.class, objectTypeId);
+        return (ObjectType) getCurrentSession().get(ObjectType.class, objectTypeId);
     }
 
 }

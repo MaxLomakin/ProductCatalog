@@ -32,17 +32,33 @@ public class DataObjectServiceImpl implements DataObjectService {
     }
 
     @Override
-    public boolean addObject(DataObject object) {
-        return dataObjectDAO.addObject(object);
+    @Transactional
+    public DataObject findByName(String userName) {
+        return dataObjectDAO.findByName(userName);
     }
 
     @Override
-    public boolean editObject(DataObject object, Integer objectId) {
-        return dataObjectDAO.editObject(object, objectId);
+    public void addObject(DataObject object) {
+        dataObjectDAO.addObject(object);
     }
 
     @Override
-    public boolean removeObject(Integer objectId) {
-        return dataObjectDAO.removeObject(objectId);
+    public void update(DataObject object, Integer objectId) {
+        dataObjectDAO.update(object, objectId);
+    }
+
+    @Override
+    @Transactional
+    public void saveOrUpdate(DataObject dataObject) {
+        if (dataObject.getObjectId() == null || findById(dataObject.getObjectId()) == null) {
+            dataObjectDAO.addObject(dataObject);
+        } else {
+            dataObjectDAO.update(dataObject, dataObject.getObjectId());
+        }
+    }
+
+    @Override
+    public void remove(Integer objectId) {
+        dataObjectDAO.remove(objectId);
     }
 }

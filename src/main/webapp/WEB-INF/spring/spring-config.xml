@@ -72,11 +72,16 @@
     <bean id="pictureService" class="com.springapp.mvc.service.impl.PictureServiceImpl"/>
     <bean id="pictureDAO" class="com.springapp.mvc.dao.impl.PictureDAOImpl"/>
 
+    <bean id="fileService" class="com.springapp.mvc.service.impl.FileServiceImpl"/>
+    <bean id="fileDAO" class="com.springapp.mvc.dao.impl.FileDAOImpl"/>
+
     <bean id="userService" class="com.springapp.mvc.service.impl.UserServiceImpl"/>
     <bean id="userDAO" class="com.springapp.mvc.dao.impl.UserDAOImpl"/>
 
     <bean id="emailValidator" class="com.springapp.mvc.validator.EmailValidator" />
     <bean id="userFormValidator" class="com.springapp.mvc.validator.UserFormValidator" />
+    <bean id="fileValidator" class="com.springapp.mvc.validator.FileValidator"/>
+    <bean id="objectValidator" class="com.springapp.mvc.validator.ObjectFormValidator"/>
 
     <bean id="multipartResolver"
                 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

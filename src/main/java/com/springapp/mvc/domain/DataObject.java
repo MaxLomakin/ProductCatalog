@@ -13,7 +13,7 @@ public class DataObject {
     @Id
     @GeneratedValue
     @Column(name="object_id")
-    private int objectId;
+    private Integer objectId;
 
     @Column(name = "name")
     private String name;
@@ -21,7 +21,7 @@ public class DataObject {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="object_type_id")
     private ObjectType objectType;
 
@@ -32,8 +32,17 @@ public class DataObject {
     public DataObject() {
     }
 
-    public int getObjectId() {
+    //Check if this is for New of Update
+    public boolean isNew() {
+        return (this.objectId == null);
+    }
+
+    public Integer getObjectId() {
         return objectId;
+    }
+
+    public void setObjectId(Integer objectId) {
+        this.objectId = objectId;
     }
 
     public String getName() {
@@ -66,5 +75,11 @@ public class DataObject {
 
     public void setPicture(Picture picture) {
         this.picture = picture;
+    }
+
+    @Override
+    public String toString() {
+        return "Object [id=" + objectId + ", name=" + name + ", objectType=" + objectType.getName()
+                + ", description=" + description + "]" + isNew();
     }
 }

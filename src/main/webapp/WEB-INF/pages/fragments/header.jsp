@@ -12,6 +12,7 @@
 
 <spring:url value="/" var="urlHome" />
 <spring:url value="/users" var="users" />
+<spring:url value="/objects" var="objects" />
 <spring:url value="/products" var="products" />
 <spring:url value="/category" var="categories" />
 <spring:url value="/uploads" var="uploads" />
@@ -31,6 +32,7 @@
 					</a>
 					<ul class="dropdown-menu">
 						<li><a href="${users}">Users</a></li>
+						<li><a href="${objects}">Objects</a></li>
 						<li><a href="${products}">Products</a></li>
 						<li><a href="${categories}">Categories</a></li>
 						<li><a href="${uploads}">Uploads</a></li>
