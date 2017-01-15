@@ -42,3 +42,13 @@
   -moz-border-radius: 2px;
   border: 1px solid #000;
 }
+
+.floatRight{
+  float:right;
+  margin-right: 18px;
+}
+
+.uploadcontainer{
+  background-color: bisque;
+  padding: 20px;
+}

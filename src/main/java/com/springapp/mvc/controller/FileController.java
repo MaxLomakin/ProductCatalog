@@ -6,12 +6,15 @@ import com.springapp.mvc.domain.FileBucket;
 import com.springapp.mvc.domain.User;
 import com.springapp.mvc.service.interfaces.DataObjectService;
 import com.springapp.mvc.service.interfaces.FileService;
+import com.springapp.mvc.service.interfaces.UserService;
 import com.springapp.mvc.validator.FileValidator;
 import java.net.URLEncoder;
 import com.sun.jndi.toolkit.url.Uri;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -47,6 +50,9 @@ public class FileController {
     FileService fileService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     MessageSource messageSource;
 
     @Autowired
@@ -65,6 +71,7 @@ public class FileController {
         List<File> documents = fileService.findFilesByObjectId(objectId);
         model.addAttribute("files", documents);
 
+        model.addAttribute("_user", getPrincipal());
         return "files/" + objectId + "manage";
     }
 
@@ -79,6 +86,7 @@ public class FileController {
         List<File> documents = fileService.findFilesByObjectId(objectId);
         model.addAttribute("files", documents);
 
+        model.addAttribute("_user", getPrincipal());
         return "files/manage";
     }
 
@@ -105,7 +113,7 @@ public class FileController {
     @RequestMapping(value = { "/delete/{objectId}/{fileId}" }, method = RequestMethod.GET)
     public String deleteDocument(@PathVariable int objectId, @PathVariable int fileId) {
         fileService.remove(fileId);
-        return "redirect:/files/add" + objectId;
+        return "redirect:/files/add/" + objectId;
     }
 
     @RequestMapping(value = { "/add/{objectId}" }, method = RequestMethod.POST)
@@ -125,6 +133,7 @@ public class FileController {
 
             saveDocument(fileBucket, object);
 
+            model.addAttribute("_user", getPrincipal());
             return "redirect:" + objectId;
         }
     }
@@ -191,6 +200,17 @@ public class FileController {
         }
 
         return null;
+    }
+
+    private Object getPrincipal(){
+        String userName = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String name = ((UserDetails) principal).getUsername();
+            return userService.findById(Integer.parseInt(name));
+        }
+
+        return "";
     }
 
 }

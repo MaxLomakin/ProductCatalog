@@ -1,33 +1,32 @@
+<%@ page session="false"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Upload/Download/Delete Files</title>
-	<link href="<c:url value='/resources/core/css/bootstrap.css' />" rel="stylesheet"></link>
-	<link href="<c:url value='/resources/core/css/app.css' />" rel="stylesheet"></link>
-</head>
+<jsp:include page="../fragments/header.jsp" />
 
 <body>
-	<div class="generic-container">
-		<div class="panel panel-default">
-			  <!-- Default panel contents -->
-		  	<div class="panel-heading"><span class="lead">List of Files</span></div>
-		  	<div class="tablecontainer">
-				<table class="table table-hover">
-		    		<thead>
-			      		<tr>
-					        <th>No.</th>
-					        <th>File Name</th>
-					        <th>Type</th>
-					        <th>Description</th>
-					        <th width="100"></th>
-					        <th width="100"></th>
-						</tr>
-			    	</thead>
+
+	<div class="container">
+
+		<h1>List of Files</h1>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>File Name</th>
+					<th>Type</th>
+					<th>Description</th>
+					<th width="80"></th>
+					<th width="80"></th>
+				</tr>
+			</thead>
 		    		<tbody>
 					<c:forEach items="${files}" var="file" varStatus="counter">
 						<tr>
@@ -35,15 +34,20 @@
 							<td>${file.name}</td>
 							<td>${file.type}</td>
 							<td>${file.description}</td>
-							<td><a href="<c:url value='/files/download/${object.objectId}/${file.fileId}' />" class="btn btn-success custom-width">download</a></td>
-							<td><a href="<c:url value='/files/delete/${object.objectId}/${file.fileId}' />" class="btn btn-danger custom-width">delete</a></td>
+							<td>
+								<a href="<c:url value='/files/download/${object.objectId}/${file.fileId}' />" class="btn btn-success custom-width">download</a>
+							</td>
+							<td>
+								<a href="<c:url value='/files/delete/${object.objectId}/${file.fileId}' />" class="btn btn-danger custom-width">delete</a>
+							</td>
+
 						</tr>
 					</c:forEach>
 		    		</tbody>
 		    	</table>
-		    </div>
-		</div>
-		<div class="panel panel-default">
+		    <%--</div>--%>
+		<%--</div>--%>
+		<%--<div class="panel panel-default">--%>
 			
 			<div class="panel-heading"><span class="lead">Upload New Document</span></div>
 			<div class="uploadcontainer">
@@ -78,7 +82,10 @@
 	
 				</form:form>
 				</div>
-		</div>
+		<%--</div>--%>
    	</div>
+
+	<jsp:include page="../fragments/footer.jsp" />
+
 </body>
 </html>

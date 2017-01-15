@@ -84,7 +84,11 @@ public class FileDAOImpl implements FileDAO {
         File file = findById(fileId);
 
         if(file != null) {
-            getCurrentSession().delete(file);
+            Session currentSession = getCurrentSession();
+            currentSession.delete(file);
+            currentSession.flush();
+
+            String abacaba = "a";
         }
 
     }
